@@ -1,0 +1,20 @@
+{
+    "name": "yoann-tyt/410-gone",
+    "description": "Talk \"410 Gone\" about planetary boundaries",
+    "require": {
+        "symfony/routing": "^6.3.0",
+        "symfony/http-kernel": "^6.3.0",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yoann Chocteau",
+            "email": "yoann@chocteau.dev"
+        }
+    ]
+}
