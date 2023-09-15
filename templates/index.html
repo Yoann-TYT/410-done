@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/gone.css">
+    <link rel="stylesheet" href="dist/theme/simple.css">
+    <title>Talk "410 Gone"</title>
+</head>
+<body>
+<h4 class="orange">
+    cpus: '1'
+    memory: 750M
+</h4>
+<h3 class="requests">Request</h3>
+<h3 class="requests-done green"></h3>
+<h3 class="requests-max-time red"></h3>
+<section class="main">
+    <section class="client">
+        <h2>Client</h2>
+        <pre><code class="language-javascript">
+fetch('http://localhost/teams').then(function (response) {
+    return response.json();
+}).then(function (data) {
+    console.log(data);
+}).catch(function (error) {
+    console.log(error);
+});
+            </code></pre>
+        <small>Response</small>
+        <pre><code class="language-json">
+[
+    {
+        "uuid": "c43de0f1-b270-4f21-99c6-67ff608ce6be",
+        "name": "The winners",
+        "users": [
+            {
+                "uuid": "59aa9168-7ee4-4867-8e07-531f17139a37",
+                "name": "John Doe",
+                "email": "john@doe.local",
+                "city": "New York"
+            },
+            {
+                "uuid": "fcde031c-6551-4f35-a17b-6e721e6c0e3e",
+                "name": "Jane Doe",
+                "email": "jane@doe.local",
+                "city": "New York"
+            }
+        ]
+    }
+]
+            </code></pre>
+
+        <script>
+            let requests = 0;
+            let requestsDone = 0;
+            let times = [];
+            let maxTime = 0;
+            while (requests < 1000) {
+                requests++;
+                document.querySelector('h3.requests').innerHTML = `Requests (${requests})`;
+                times[requests] = new Date().getTime();
+                fetch('http://localhost/teams').then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    console.log(data);
+                    requestsDone++;
+                    if (times[requestsDone] > maxTime) {
+                        maxTime = (new Date().getTime() - times[requestsDone]) / 1000
+                    }
+                    document.querySelector('h3.requests-done').innerHTML = `Requests Done (${requestsDone})`;
+                }).catch(function (error) {
+                    console.log(error);
+                }).finally(function () {
+                    console.log(times);
+                    document.querySelector('h3.requests-max-time').innerHTML = `Max Time per Request: ${maxTime}s`;
+                });
+            }
+
+        </script>
+    </section>
+    <section class="caddy">
+        <h2>Caddy</h2>
+        <pre><code class="language-shell">
+:80 {
+    root * /srv/app/public
+
+    handle /dist/* {
+        # Enable the static file server.
+        file_server
+    }
+
+    handle {
+        php_fastcgi app:9000
+    }
+}
+
+            </code></pre>
+    </section>
+    <section class="php">
+        <h2>PHP</h2>
+        <pre><code class="language-php">
+$routes->add('teams', new Route('/teams', [
+    '_controller' => function (): Response {
+        return new Response(
+            json_encode((new DataProvider())->getTeamsWithUsers()),
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/json']
+        );
+    }]
+));
+            </code></pre>
+    </section>
+</section>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+<!-- and it's easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

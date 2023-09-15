@@ -1,0 +1,56 @@
+body {
+    font-family: var(--r-main-font);
+}
+
+h3 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 15px 0;
+    text-align: center;
+    height: 35px;
+}
+
+h4 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.green {
+    color: darkgreen;
+}
+.red {
+    color: darkred;
+}
+.orange {
+    color: orange;
+}
+
+section.main {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+}
+section.main > section {
+    width: 100%;
+    padding: 0 15px;
+    border: 1px solid var(--r-heading-color);
+}
+section.main > section.caddy {
+    width: 100%;
+    max-width: 300px;
+    padding: 0 15px;
+    border: 1px solid var(--r-heading-color);
+}
+
+section.main > section > h2 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin: 15px 0;
+    text-align: center;
+}
+
+section.main > section > pre > code {
+    font-size: 1.1rem;
+}
