@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./
+      target: app_php
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 30M
+        reservations:
+          cpus: '0.5'
+          memory: 30M
+    volumes:
+      - ./:/srv/app
+      - /srv/app/vendor
+
+  caddy:
+    build:
+      context: ./
+      target: app_caddy
+    volumes:
+      - ./public/dist:/srv/app/public/dist
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 30M
+        reservations:
+          cpus: '0.5'
+          memory: 30M
+    ports:
+      - "80:80"
+    depends_on:
+      - app

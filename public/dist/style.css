@@ -1,0 +1,17 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 26px;
+    line-height: 1.5;
+    color: #333;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 15px auto;
+}
+table th,
+table td {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+}
