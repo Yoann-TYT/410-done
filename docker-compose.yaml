@@ -8,10 +8,10 @@ services:
       resources:
         limits:
           cpus: '0.5'
-          memory: 20M
+          memory: 30M
         reservations:
           cpus: '0.5'
-          memory: 20M
+          memory: 30M
     volumes:
       - ./:/srv/app
       - /srv/app/vendor
