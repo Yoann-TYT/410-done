@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/style.css">
+    <title>Talk "410 Gone"</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>REQUESTS</th>
+            <th>MAX TIME PER REQUEST</th>
+            <th>CPU</th>
+            <th>MEMORY</th>
+        </tr>
+        <tr>
+            <td class="requests"></td>
+            <td class="requests-max-time"></td>
+            <td>0.5</td>
+            <td>30M</td>
+        </tr>
+    </table>
+
+    <script>
+        let requests = 0;
+        let requestsDone = 0;
+        let times = [];
+        let maxTime = 0;
+        while (requests < 1000) {
+            requests++;
+            document.querySelector('.requests').innerHTML = `${requests}`;
+            times[requests] = new Date().getTime();
+            fetch('http://localhost/teams').then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                console.log(data);
+                requestsDone++;
+                if (times[requestsDone] > maxTime) {
+                    maxTime = (new Date().getTime() - times[requestsDone]) / 1000
+                }
+            }).catch(function (error) {
+                console.log(error);
+            }).finally(function () {
+                console.log(times);
+                maxTime = maxTime.toFixed(2);
+                document.querySelector('.requests-max-time').innerHTML = `${maxTime}s`;
+            });
+        }
+
+    </script>
+</body>
+</html>
