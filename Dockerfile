@@ -9,6 +9,7 @@ RUN set -eux; \
     	zip \
     	apcu \
 		opcache \
+        redis \
     ;
 
 ENV COMPOSER_ALLOW_SUPERUSER=1

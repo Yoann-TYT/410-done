@@ -12,9 +12,22 @@ services:
         reservations:
           cpus: '0.5'
           memory: 30M
+    depends_on:
+        - redis
     volumes:
       - ./:/srv/app
       - /srv/app/vendor
+
+  redis:
+    image: redis:alpine
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 30M
+        reservations:
+          cpus: '0.5'
+          memory: 30M
 
   caddy:
     build:
