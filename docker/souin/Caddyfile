@@ -1,0 +1,13 @@
+{
+    order cache before rewrite
+    cache {
+        redis {
+            url redis:6379
+        }
+    }
+}
+
+:80 {
+    cache
+    reverse_proxy caddy
+}

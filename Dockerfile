@@ -27,11 +27,28 @@ ENTRYPOINT ["entrypoint"]
 CMD ["php-fpm"]
 
 FROM caddy:2.7.4-alpine as app_caddy
+
 WORKDIR /srv/app
 
 COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 COPY --from=app_php /srv/app /srv/app
+
+EXPOSE 80
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+
+FROM caddy:2.7.4-builder-alpine AS app_caddy_souin_builder
+RUN xcaddy build \
+    --with github.com/darkweak/souin/plugins/caddy \
+    --output /usr/bin/caddy
+
+FROM caddy:2.7.4-alpine as app_caddy_souin
+COPY --from=app_caddy_souin_builder /usr/bin/caddy /usr/bin/caddy
+
+WORKDIR /srv/app
+
+COPY docker/souin/Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 80
 

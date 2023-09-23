@@ -43,7 +43,22 @@ services:
         reservations:
           cpus: '0.5'
           memory: 30M
+    depends_on:
+      - app
+
+  souin:
+    build:
+      context: ./
+      target: app_caddy_souin
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 30M
+        reservations:
+          cpus: '0.5'
+          memory: 30M
     ports:
       - "80:80"
     depends_on:
-      - app
+      - caddy
