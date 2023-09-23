@@ -1,6 +1,6 @@
 :80 {
     root * /srv/app/public
-
+    encode gzip
     handle /dist/* {
         # Enable the static file server.
         file_server

@@ -9,5 +9,6 @@
 
 :80 {
     cache
+    encode gzip
     reverse_proxy caddy
 }
